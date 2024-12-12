@@ -405,7 +405,7 @@ height="1.698611111111111in"}
 
 表结构如下
 
-![](./media/image9.png){width="5.770833333333333in" height="4.26875in"}
+![](./media/image9.png)
 
 ### 用户注册和登录模块 
 
@@ -478,7 +478,7 @@ API请求转发：
 
 路由处理函数proxy首先定义目标大模型的API地址，即讯飞开放平台的https://spark-api-open.xf-yun.com/v1/chat/completions。这个地址是大模型的主要接口，用于接收上下文和用户输入，然后生成对话回复。
 
-![](./media/image20.png){width="5.771527777777778in" height="1.30625in"}
+![](./media/image20.png)
 
 从前端接收的数据通过request.get_json(）解析，这一步确保获取到的是一个JSON对象，包含了对话上下文、用户输入及一些模型参数（如max_tokens、Stream等）。这些数据会直接转发到讯飞API。
 
@@ -490,7 +490,7 @@ API请求转发：
 
 若返回内容中包含错误信息（例如，当\"message\"字段的值非\"Success\"时），后端会立即将错误信息作为响应内容发送给前端。若返回的是有效的对话内容，代码将从JSON结构中提取出具体的文本内容（即choices\[0\]\[\'delta\'\]\[\'content\'\]），随后利用生成器yield功能，将这些内容逐块、有序地发送给前端。
 
-![](./media/image21.png){width="5.423611111111111in" height="2.8125in"}
+![](./media/image21.png)
 
 前端的主要功能是接收用户输入，发送给后端，处理后端返回的流式数据，并动态更新页面以显示完整的对话内容。以下详细说明前端的实现步骤：
 
@@ -560,7 +560,7 @@ height="3.321527777777778in"}
 
 ## 查看具体检测物体 
 
-![](./media/image32.png){width="5.763194444444444in" height="4.24375in"}
+![](./media/image32.png)
 
 ## 适配手机 
 
