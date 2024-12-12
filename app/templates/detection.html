@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YOLO V11</title>
+    <style>
+        /* 主内容区域 */
+        #content {
+            margin: auto;
+            margin-top: 0;
+            margin-bottom: 0;
+            padding: 0;
+            display: block;
+            background-color: #febfc63d;
+            background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%239C92AC' fill-opacity='0.53' fill-rule='evenodd'/%3E%3C/svg%3E");
+            background-position: bottom;
+            
+        }
+
+        #topContent {
+            overflow: auto;
+            margin: 0;
+            max-height: calc(100vh - 64px);
+        }
+
+        .block {
+            display: flex;
+            margin-top: 30px;
+        }
+
+        /* 图片区域 */
+        .img.block {
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .img.block .canvas {
+            width: 100%;
+            max-width: 482px;
+            max-width: 482px;
+            height: 320px;
+            border-radius: 20px;
+            border: 0.5px solid #000000bb;
+            background: url('../static/img/bj2.jpg') no-repeat;
+            background-size: cover;
+            background-position: top;
+        }
+
+        /* 设置按钮 */
+        .img.block .settings {
+            min-width: 350px;
+            max-width: 350px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+
+        }
+
+        .img.block .settings .btn {
+            width: 100px;
+            height: 50px;
+            border-radius: 10px;
+            border: 1px solid #888;
+            background-color: #fff;
+            text-align: center;
+            line-height: 50px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .img.block .settings .btn:hover {
+            background-color: #e0e0e0;
+        }
+
+        .img.block .settings .btn:active {
+            background-color: #c0c0c0;
+        }
+
+        .img.block .settings .btn span {
+            font-size: 14px;
+        }
+
+        /* 置信度 */
+        .img.block .settings .confidence {
+            width: 100%;
+
+
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .img.block .settings .confidence input {
+            width: 60%;
+            margin: 0 10px;
+        }
+
+        .img.block .settings .confidence span {
+            margin: 0;
+            font-size: 14px;
+            text-align: left;
+        }
+
+        /* 列表 */
+        .block.list {
+            display: flex;
+            justify-content: space-between;
+            gap: 2px;
+        }
+
+        #infoList {
+            background: #dac0e282;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cg fill='%239C92AC' fill-opacity='0.4'%3E%3Cpolygon fill-rule='evenodd' points='8 4 12 6 8 8 6 12 4 8 0 6 4 4 6 0 8 4'/%3E%3C/g%3E%3C/svg%3E");
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            width: 49%;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.772);
+        }
+
+        #oldList {
+            background: #dac0e282;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cg fill='%239C92AC' fill-opacity='0.4'%3E%3Cpolygon fill-rule='evenodd' points='8 4 12 6 8 8 6 12 4 8 0 6 4 4 6 0 8 4'/%3E%3C/g%3E%3C/svg%3E");
+            
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            width: 49%;
+            display: flex;
+            gap: 10px;
+            flex-direction: column;
+            box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.772);
+        }
+
+        #oldList .element {
+            height: 30px;
+            background-color: #f4f4f4;
+            border-radius: 10px;
+            text-align: center;
+            line-height: 30px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #infoList .element {
+            width: 120px;
+            height: 30px;
+            background-color: #f4f4f4;
+            border-radius: 10px;
+            text-align: center;
+            line-height: 30px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #infoList .element:hover,
+        #oldList .element:hover {
+            background-color: #e0e0e0;
+        }
+
+
+        /* 响应式设计 */
+        @media (max-width: 830px) {
+
+            .img.block .canvas {
+                min-width: 95%;
+                max-width: 95%;
+            }
+
+            #topContent {
+                max-height: calc(100vh - 117px);
+            }
+
+            .block.list {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            #infoList,
+            #oldList {
+                width: 95%;
+                margin: auto;
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+
+    {% extends 'parent.html' %}
+
+    {% block header %}
+    <div id="header">
+        <div class="left t"></div>
+        <div class="title t">YOLO 11</div>
+        <div class="right t"></div>
+    </div>
+    </div>
+    {% endblock %}
+
+    {% block content %}
+    <div id="topContent">
+        <div class="img block">
+            <canvas class="canvas">Canvas</canvas>
+            <div class="settings">
+                <label class="btn" for="file-input">导入文件</label>
+                <input type="file" id="file-input" accept=".jpg,.jpeg,.png,.mp3,.mov,.avi" class="btn"
+                    style="display:none;">
+                <div class="btn">导入文件夹</div>
+                <div class="btn">摄像头</div>
+                <div class="btn confidence">
+                    置信度：
+                    <input type="range" id="Irange" value="9">
+                    <span id="conf">9</span>%
+                </div>
+            </div>
+        </div>
+
+        <div class="block" style="background:#f0f0f0bb;height:2px; margin:0 10px;">
+            <hr>
+        </div>
+
+        <div class="block list">
+            <div id="infoList">
+                <div style="text-align: center;color:#ffffff">暂无详情，请检测图片</div>
+            </div>
+            <div id="oldList">
+                {% for i in data %}
+                <button class="element" onclick="showOlList('{{ i.id}}')">{{ i['date'] }}</button>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const map = new Map();
+        // 用来存储需要处理的初始图像
+        let ImageData = '';
+
+        const Irange = document.querySelector('#Irange');
+        Irange.addEventListener('input', () => {
+            const conf = document.querySelector('#conf');
+            conf.textContent = Irange.value;
+        });
+
+        const file_input = document.querySelector('#file-input');
+        file_input.addEventListener('change', () => {
+            const file = file_input.files[0];
+            ImageData = file;
+            const filetype = /\.(.*)$/.exec(file.name)[1];
+            if (file) {
+                const form = new FormData();
+                form.append('file', file);
+                form.append('data', JSON.stringify({ "conf": Irange.value / 100 }));
+
+                fetch('/api/yolo', {
+                    method: 'POST',
+                    body: form,
+                }).then((response) => {
+                    return response.json();
+                }).then(data => {
+                    const infoList = document.querySelector('#infoList');
+                    infoList.innerHTML = '';
+                    showConvas(ImageData, {'old': true, 'oldInfo': data })
+                });
+                showConvas(file);
+            }
+            file_input.value = '';
+        });
+
+        // 绘制图像函数
+        function showConvas(fileOrUrl, cli = { 'ii': false, 'info': '', 'old': false, 'oldInfo': '' }) {
+            // 基础配置
+            const img = new Image();
+            const canvas = document.querySelector('canvas');
+            const ctx = canvas.getContext('2d');
+
+            // 调整 Canvas 大小的函数
+            function reCanvaseSize(imgHeight, imgWidth) {
+                const imglv = imgHeight / imgWidth;
+                const client = canvas.getBoundingClientRect();
+                const lv = client.height / client.width;
+                if (imglv <= 1) {
+                    canvas.width = imgWidth;
+                    canvas.height = imgWidth * lv;
+                } else {
+                    canvas.height = imgHeight;
+                    canvas.width = imgHeight * imglv;
+                }
+            }
+
+            // 图片加载完成后的处理函数
+            img.onload = function () {
+
+                // 根据图片大小调整 Canvas 大小
+                reCanvaseSize(img.height, img.width);
+                // 显示图片
+                ctx.drawImage(img, 0, 0, img.width, img.height);
+
+                if (cli['ii']) {
+                    
+                    // 如果 `cli['ii']` 为 true，则绘制额外的部分
+                    reCanvaseSize(cli['info'][2] - cli['info'][0], cli['info'][3] - cli['info'][1]);
+                    ctx.drawImage(img, cli['info'][0], cli['info'][1], cli['info'][2] - cli['info'][0], cli['info'][3] - cli['info'][1], 0, 0, cli['info'][2] - cli['info'][0], cli['info'][3] - cli['info'][1]);
+                    ctx.font = 'bold 20px Arial';
+                    ctx.fillStyle = 'red';
+                    ctx.textAlign = 'left';
+                    ctx.textBaseline = 'top';
+                    ctx.fillText(cli['cls'], 0, 0);
+                }else if(cli['old']){
+                    ctx.strokeStyle = 'blue';
+                    ctx.lineWidth = 5;
+                    console.log(cli['oldInfo'])
+                    // 添加到列表之前要初始化
+                    const infoList = document.querySelector('#infoList');
+                    infoList.innerHTML = '';
+                    map.clear()
+                    cli['oldInfo'].xyxy.forEach((element, index) => {
+                        ctx.strokeRect(element[0], element[1], element[2] - element[0], element[3] - element[1]);
+                        ctx.font = 'bold 40px Arial';
+                        ctx.fillStyle = 'red';
+                        ctx.textAlign = 'left';
+                        ctx.textBaseline = 'top';
+                        ctx.fillText(cli['oldInfo'].cls[index], element[0], element[1]);
+
+                        // 添加到列表
+                        const ILelement = document.createElement('button');
+                        ILelement.classList.add('element');
+                        ILelement.innerText = `${(cli['oldInfo'].conf[index] * 100).toFixed(0)}%    ${cli['oldInfo'].cls[index]}`;
+                        infoList.appendChild(ILelement);
+                        map.set(ILelement, element);
+                    });
+                    // 再监听一次
+                    EventListenerList()
+                }
+            };
+
+            // 判断传入的是 URL 还是 File 对象
+            if (fileOrUrl instanceof File) {
+                // 如果是 File 对象，读取为 Data URL
+                const FileRead = new FileReader();
+                FileRead.onload = function (e) {
+                    img.src = e.target.result;  // 设置 img 的 src 为 Data URL
+                };
+                FileRead.readAsDataURL(fileOrUrl);
+            } else {
+                // 如果是 URL，直接设置 img 的 src
+                img.src = fileOrUrl;
+            }
+        }
+
+        function EventListenerList(){
+            const infoList = document.querySelector('#infoList');
+            infoList.addEventListener('click', (event) => {
+            const element = event.target;
+            if (element.className == 'element') {
+                showConvas(ImageData, { 'ii': true, 'info': map.get(element), 'cls': element.innerText });
+            }
+        });
+        }
+
+
+        const OlData = {
+        {% for i in data %}
+        {{ i.id }}: {{ i | safe() }},
+        {% endfor %}
+        }
+
+
+        // 数据库列表函数
+        function showOlList(i) {
+            console.log(OlData[i])
+            // 这里面有异步操作，使用回调函数，确保执行完成
+            ImageData = `/static/user_img/${OlData[i]['file_name']}`;
+            showConvas(ImageData, {'old': true, 'oldInfo': OlData[i] })
+        }
+    </script>
+
+    {% endblock %}
+</body>
+
+</html>

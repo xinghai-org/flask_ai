@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .div{
+      display:flex;
+      background:#ff0000;
+      flex-wrap: wrap;
+      max-height:100vh;
+      flex-direction: column;
+      min-width:300px;
+      align-items: center;
+      border:1px solid red;
+      justify-content: center;
+    }
+    .div div{
+      border:1px solid #ddd;
+      flex-grow: 1;
+      min-height:50px;
+      max-width:50px;
+      margin-top:10px;
+    }
+    .aaa{
+      min-width: 600px;
+    }
+  </style>
+</head>
+<body>
+  <!-- display 如果为flex，那么就进入了弹性布局，如果弹性布局里面的项目只有一个，而且这一个已经超过了边界，那么就超过了边界，文字默认为一个元素 -->
+  <!-- 默认情况下，开启换行，flex-wrap 为 wrap，当主轴里的项目到达了顶点就会换行，由于侧轴的项目会默认的占据剩余控件，那么如果换行了，那么剩余空间就会被项目平分占据 -->
+  <div class="div">
+    <div>abc</div>
+    <div>abc</div>
+    <div>abc</div>
+    <div>abc</div>
+    <div>abc</div>
+    <div>abc</div>
+    <input type="range" id="slider" min="0" max="100" value="50">
+    <div>abc</div>
+    <div>abc</div>
+    <div>abc</div>
+    <div>abc</div>
+    <div>abc</div>
+    <div>abc</div>
+    <div>abc</div>
+    <div>abc</div>
+    <div>abc</div>
+    <div>abc</div>
+    <div>abc</div>
+    <div>abc</div>
+    <div>abc</div>
+    <div>abc</div>
+    <div>abc</div>
+  </div>
+</body>
+</html>

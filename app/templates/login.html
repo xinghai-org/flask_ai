@@ -1,0 +1,62 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/login.css') }}" >
+    <script src="{{ url_for('static',filename='js/login.js') }}" ></script>
+</head>
+
+<body>
+    <div class="system_name">
+        <h2>还没想好名字</h2>
+    </div>
+
+    <div class="login_page">
+        <div id="container1">
+
+            <div class="login">
+
+                <h3>登入 Login</h3>
+
+                <form action="{{ url_for('login') }}" method="POST" >
+                    {{ loginForm.lusername }}
+                    <div class="tab"></div>
+                    {{ loginForm.lpassword }}
+                    {% for i in get_flashed_messages() %}
+                    <div class="tab" style="font-size: 12px;color:rgba(255, 0, 0, 0.329);text-align: left;margin-left: 20px;" >{{ i }}</div>
+                    {% endfor %}
+                    {{ loginForm.lsubmit }}
+                </form>
+
+                <h5 onclick="show_hide()">注册账号</h5>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="signup_page" <div id="container2">
+
+        <div class="signup">
+
+            <h3>注册 Sign Up</h3>
+
+            <form action="{{ url_for('register') }}" method="POST" >
+                {{ signUpFrom.username }}
+                <div class="tab"></div>
+                {{ signUpFrom.password }}
+                <div class="tab"></div>
+                {{ signUpFrom.password2 }}
+                <div class="tab"></div>
+                {{ signUpFrom.submit }}
+            </form>
+
+            <h5 onclick="show_hide()">登入账号</h5>
+
+        </div>
+    </div>
+    </div>
+</body>
+
+</html>

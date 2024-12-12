@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的个人中心</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+        #content{
+            background:url('../static/img/my_bj3.png') no-repeat,#ffdbeb81;
+            background-size: cover;
+            background-position: bottom;
+        }
+        .container {
+            background:url('../static/img/my_bj4.jpg') no-repeat;
+            background-size:auto;
+            background-position: left;
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.539);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            font-size: 2rem;
+            color: #333;
+        }
+
+        .profile-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-info img {
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            margin-right: 20px;
+        }
+
+        .profile-info div {
+            flex: 1;
+        }
+
+        .profile-info h2 {
+            margin: 0;
+            font-size: 1.5rem;
+            color: #333;
+        }
+
+        .profile-info p {
+            margin: 5px 0;
+            color: #777;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .action-buttons button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            transition: background-color 0.3s;
+        }
+
+        .action-buttons button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+
+<body>
+    {% extends 'parent.html' %}
+    {% block content %}
+    <div class="container">
+        <header>
+            <h1>欢迎来到个人中心</h1>
+        </header>
+
+        <div class="profile-info">
+            <img src="../static/img/tx.jpg" alt="User Avatar">
+            <div>
+                <h2>{{ username }}</h2>
+                {% if message != None %}
+                <span style="font-size: 12px;color:rgba(255, 0, 0, 0.377);">{{ message }}</span>
+                {% endif%}
+                <br>
+                <strong>姓名：</strong>
+                <div id="profile-username" style="display:inline-block;min-width:100px;">{{ name }}</div>
+                <br>
+                <strong>邮箱：</strong>
+                <div id="profile-email" style="display:inline-block;min-width:100px;">{{ email }}</div>
+                <br>
+                <span style="display:none;">
+                    <strong>新密码：</strong>
+                    <div id="new_password" style="display:inline-block;min-width:100px;border:solid;"
+                        contenteditable="true"></div>
+                </span>
+                <p><strong>注册时间：</strong>{{date}}</p>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <button id="edit_profile">修改个人信息</button>
+            <button id="submit_profile" style="display:none;">确认</button>
+            <button id="edit_password">修改密码</button>
+            <button onclick="window.location.href='/logout'">登出</button>
+        </div>
+    </div>
+    <script>
+        const edit_profile = document.querySelector('#edit_profile')
+        const submit_profile = document.querySelector('#submit_profile')
+        const email = document.querySelector('#profile-email')
+        const username = document.querySelector('#profile-username')
+        const edit_password = document.querySelector('#edit_password')
+        const new_password = document.querySelector('#new_password')
+        let cpd = false
+
+        // 修改信息
+        edit_profile.addEventListener('click', () => {
+            submit_profile.style.display = 'block'
+            edit_profile.style.display = 'none'
+            username.setAttribute("contenteditable", "true")
+            username.style.border = 'solid'
+            email.setAttribute("contenteditable", "true")
+            email.style.border = 'solid'
+
+        })
+        // 提交信息
+        submit_profile.addEventListener('click', () => {
+            fetch('/page/my', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: username.innerText,
+                    email: email.innerText,
+                    password: new_password.innerText,
+                    cpd: cpd
+                })
+            }).then(() => {
+                window.location.href = '/page/my'
+            })
+        })
+
+        edit_password.addEventListener('click', () => {
+            new_password.parentElement.style.display = 'block'
+            edit_password.style.display = 'none'
+            submit_profile.style.display = 'block'
+            cpd = true
+        })
+    </script>
+    {% endblock %}
+
+
+
+</body>
+
+</html>
