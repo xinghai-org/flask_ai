@@ -12,7 +12,7 @@ app.secret_key = 'abcdefg'
 YoloModel = YOLO('./app/yolo11s.pt')
 print("模型信息：",YoloModel.info())
 # 配置数据库
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://hostname:password@you_host/flask_server'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://username:password@host/yousql'
 db = SQLAlchemy()
 db.init_app(app)
 from .model import *
