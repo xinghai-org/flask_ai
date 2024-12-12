@@ -1,0 +1,6 @@
+Flask
+flask_wtf
+Pillow
+Requests
+ultralytics
+WTForms
