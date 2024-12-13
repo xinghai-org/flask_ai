@@ -9,7 +9,6 @@ import re
 api = Blueprint('api',__name__)
 
 @api.route('/xunfei',methods=['POST'])
-@login_required
 def proxy():
     # 目标大模型的 API 地址
     url = "https://spark-api-open.xf-yun.com/v1/chat/completions"
