@@ -1,6 +1,10 @@
 Flask
+flask_login
+flask_sqlalchemy
 flask_wtf
 Pillow
 Requests
+SQLAlchemy
 ultralytics
 WTForms
+pymysql

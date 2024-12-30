@@ -2,6 +2,7 @@ import requests
 from .. import Blueprint,request,Response,Cinfo,User,current_user,db
 from .. import YoloModel,jsonify
 from .. import login_required
+from .. import flask_config
 import json
 import io
 from PIL import Image
@@ -15,7 +16,7 @@ def proxy():
     
     # 请求头
     headers = {
-        "Authorization": "Bearer you token",  # 请替换为有效的 token
+        "Authorization": flask_config['xf'],  # 请替换为有效的 token
         "Content-Type": "application/json"
     }
     

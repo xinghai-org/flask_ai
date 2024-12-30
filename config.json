@@ -1,0 +1,9 @@
+{
+    "xf":"Bearer youtoken",
+    "mysql":{
+        "host":"172.20.76.71",
+        "username":"root",
+        "password":"123456",
+        "database":"flask_server"
+    }
+}

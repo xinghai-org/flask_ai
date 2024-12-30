@@ -220,7 +220,7 @@ API
 
 plaintext
 
-1.  ![2024-12-12_02-55-45](./media/image2.png)
+1.  ![2024-12-12_02-55-45](https://db.xinghai.ink/Typora/17355876124571393.png)
 
     前端采用HTML、CSS及JavaScript技术栈，构建直观易用的用户界面，并通过AJAX异步通信技术，与后端高效交换数据，如目标检测结果、用户信息等。同时，前端页面借助Vue.js等前端框架，提升动态交互性能，从而确保用户获得出色的使用体验。
 
@@ -359,21 +359,21 @@ python使用conda创建虚拟环境，确保依赖的库和版本一致，避免
 
 在Ubuntu系统中，使用mysql8.0数据库，
 
-![](./media/image3.png)
+![](https://db.xinghai.ink/Typora/17355876292858114.png)
 
 进行配置，在配置文件中配置远程访问，在mysqld.conf配置文件中接收来自当存在具有IP地址的访问时，在MySQL数据库管理系统中，需要将用户配置为通过账号和密码进行登录验证。为此，可设置用户账号（如root），并为其分配密码（例如123456），以确保登录成功。
 
-![](./media/image4.png)
+![](https://db.xinghai.ink/Typora/17355876308832157.png)
 
 创建数据库为flask_server
 
-![](./media/image5.png)
+![](https://db.xinghai.ink/Typora/17355878194089804.png)
 
 通过实施域名解析技术，我们能够将域名host.xinghai.xyz与特定的主机IP地址进行有效绑定，确保用户在访问该域名时能够被准确的导向至相应的服务器。
 
 在开发基于Flask框架的应用程序过程中，与数据库的交互是不可或缺的。为了实现这一目标，在Flask中，我们通常会采用flask_sqlalchemy模块来建立与数据库的连接。通过精确配置连接参数，我们可以将数据库连接信息与Flask应用实例紧密绑定，确保应用能够无缝执行数据库操作。
 
-![](./media/image6.png)
+![](https://db.xinghai.ink/Typora/17355876365904307.png)
 
 配置数据库模型
 
@@ -387,18 +387,18 @@ python使用conda创建虚拟环境，确保依赖的库和版本一致，避免
 
 通过这种做法，我们不仅提升了开发效率，也为项目的长期发展构筑了坚实的基础。
 
-![](./media/image7.png)
+![](https://db.xinghai.ink/Typora/17355876383400571.png)
 
 在这个数据模型设计中，我们定义了两个主要的表格结构，第一个是用户表，它负责存储所有用户的基本信息。第二个表是用于记录和存储用户每次进行检测时产生的历史文件信息的表。这两个表之间为一对多关系，即每个用户ID可关联多个历史记录条目，便于系统追踪和管理用户的历史检测数据。
 
 在完成了模型的设计和定义之后，接下来的步骤是在实际的数据库中创建这些表，以确保数据能够被正确地存储和管理。为了实现这一点，我们使用了Flask框架提供的shell环境。利用Flask
 shell执行特定命令与脚本，我们能够轻松地将模型定义转化为数据库中实际存在的表，为后续的数据操作及查询奠定坚实基础。
 
-![](./media/image8.png)
+![](https://db.xinghai.ink/Typora/1735587642221216.png)
 
 表结构如下
 
-![](./media/image9.png)
+![](https://db.xinghai.ink/Typora/17355876475453308.png)
 
 ### 用户注册和登录模块 
 
@@ -406,49 +406,49 @@ shell执行特定命令与脚本，我们能够轻松地将模型定义转化为
 
 Flask-login模块的配置如下，在载入login模块之后使用init_app方法绑定当前app应用，使用钩子函数，每当用户访问网站时直接从数据库里获取当前用户的所有信息
 
-![](./media/image10.png)
+![](https://db.xinghai.ink/Typora/17355876547929587.png)
 
 在视图函数中，创建login视图函数，用于处理用户登入信息，如果请求为get则返回登入界面的html，如果为post则获取表单信息，验证用户账号密码的正确性，由于使用了flask-login模型这里登人员需要使用login_user方法就可以了，在登入前退出登入则可以实现用户的切换
 
-![](./media/image11.png)
+![](https://db.xinghai.ink/Typora/17355876605639513.png)
 
 在处理get请求时，返回的html中会带有flask-wtf插件的表单模块，使用表单可以更方便地检验用户信息的合法性，表单模块如下，包括用户名，和密码
 
-![](./media/image12.png)
+![](https://db.xinghai.ink/Typora/1735587665380151.png)
 
 在注册模块中，同样需要对login.html页面返回的数据进行处理。具体地，系统会通过检测表单中的用户名和密码，若这些信息不存在于数据库中，则将其注册到数据库中。
 
-![](./media/image13.png)
+![](https://db.xinghai.ink/Typora/1735587667611524.png)
 
 注册视图函数如下
 
-![](./media/image14.png)
+![](https://db.xinghai.ink/Typora/1735587671441417.png)
 
 ### 目标检测模块 
 
 目标检测模型使用了yolov11的算法，通过在网上公开的2400张数据集经过100轮的训练得出的模型，在flask的page页面中写入了目标检测模块的视图函数
 
-![](./media/image15.png)
+![](https://db.xinghai.ink/Typora/1735587674250928.png)
 
 视图函数首先引入了@login_requed，在于用户登入时才能访问，当用户访问时，则在数据库中获取相关历史检测信息，通过flaks模板渲染到detection.html中，让用户直接访问历史检测信息而不用重新检测，然后返回到客户端浏览器
 
 在html中用户通过上传图片到api蓝图的yolo视图函数中进行检测，视图函数如下，获取到，通过Pillow库处理图像数据，结合YOLO目标检测模型执行检测，解析出目标类别、边界框坐标和置信度等信息。检测结果以JSON格式返回客户端，同时使用SQLAlchemy将结果与当前用户信息关联后存入数据库，并将上传的图片保存在服务器指定路径中，实现了目标检测的完整数据处理与存储流程
 
-![](./media/image16.png)
+![](https://db.xinghai.ink/Typora/17355876768215833.png)
 
 前端处理，当在前端通过fetch向后端发送POST请求后，通常会接收到一个JSON格式的响应数据。该数据遵循特定的结构，通常包含目标检测结果，如目标类别（cls）、目标边界框的坐标（xyxy）以及每个目标的置信度（conf）。例如，目标检测数据集的json格式可能包含这些信息，以便于后续处理和分析。前端接收到这些数据后，首先通过then方法解析JSON，将返回数据存储在变量data中。随后，代码会清空之前用于显示目标检测信息的HTML列表元素infoList，以确保新数据能够正确无误地显示，避免与旧数据发生冲突。随后调用了showConvas函数，将图片和后端返回的目标检测数据作为参数传入，用于在Canvas画布上绘制图像和检测结果。
 
-![](./media/image17.png)
+![](https://db.xinghai.ink/Typora/1735587680991823.png)
 
 在showConvas函数中，首先加载用户上传的图像。通过判断fileOrUrl是文件对象还是URL，使用FileReader读取文件数据或直接设置图像的URL路径，最终将图像加载到Image对象中。当图像加载完成后，会调用onload事件处理程序。该程序首先调整Canvas画布的大小，使其与图像的宽高比例一致，以保证图像在画布中的显示不失真。然后，使用drawImage方法将图像绘制在画布上。
 
-![](./media/image18.png)
+![](https://db.xinghai.ink/Typora/173558768274992.png)
 
 当检测到绘制目标检测结果的标志cli\[\'old\'\]为true时，函数进一步处理检测数据。首先，利用cli\[\'oldInfo\'\].xyxy中的边界框坐标数据，通过ctx.strokeRect函数在画布上为每个目标绘制矩形框。在绘制过程中，将边框颜色设定为蓝色，线宽设置为5像素，确保其在图像上清晰可辨。随后，利用fillText方法，在每个目标的边界框顶部显示其类别名称，颜色设为醒目的红色，并采用大号字体，以便用户轻松识别。
 
 同时，此外，该函数还负责将检测结果实时同步至HTML列表infoList中。通过遍历后端反馈的数据，将每个检测目标的信息（包括置信度百分比和类别名称）格式化为按钮元素，并动态地添加到列表中。每个按钮的内容不仅显示检测信息，还绑定了其对应的边界框坐标，以便用户后续操作使用。最后，函数为这些动态生成的按钮添加事件监听器，使用户点击某个按钮时，可以根据存储的边界框信息重新绘制图像并高亮显示对应的目标区域。这种交互设计使得用户可以方便地查看检测结果，同时实现了图像与列表信息的联动展示。
 
-![](./media/image19.png)
+![](https://db.xinghai.ink/Typora/1735587690952132.png)
 
 ### 讯飞大模型接口模块 
 
@@ -461,7 +461,7 @@ API请求转发：
 
 路由处理函数proxy首先定义目标大模型的API地址，即讯飞开放平台的https://spark-api-open.xf-yun.com/v1/chat/completions。这个地址是大模型的主要接口，用于接收上下文和用户输入，然后生成对话回复。
 
-![](./media/image20.png)
+![](https://db.xinghai.ink/Typora/1735587695238835.png)
 
 从前端接收的数据通过request.get_json(）解析，这一步确保获取到的是一个JSON对象，包含了对话上下文、用户输入及一些模型参数（如max_tokens、Stream等）。这些数据会直接转发到讯飞API。
 
@@ -483,57 +483,57 @@ API请求转发：
 
 整个流程结束后，占位符回复会被替换为助手生成的完整内容。
 
-![](./media/image23.png)
+![](https://db.xinghai.ink/Typora/17355876973594277.png)
 
 # 项项目成果 
 
 ## 登入界面 
 
-![](./media/image24.png)
+![](https://db.xinghai.ink/Typora/1735587705202801.png)
 
 ## 注册页面 
 
-![](./media/image25.png)
+![](https://db.xinghai.ink/Typora/17355877001854095.png)
 
 ## Ai对话 
 
-![](./media/image26.png)
+![](https://db.xinghai.ink/Typora/1735587709728476.png)
 
 ## 手机适配 
 
-![](./media/image27.png)
+![](https://db.xinghai.ink/Typora/17355877118924234.png)
 
 ## 连续对话 
 
-![](./media/image28.png)
+![](https://db.xinghai.ink/Typora/17355878327101882.png)
 
 ## 目标检测页面 
 
-![](./media/image29.png)
+![](https://db.xinghai.ink/Typora/17355877175246258.png)
 
 ## 检测图片 
 
-![](./media/image30.png)
+![](https://db.xinghai.ink/Typora/17355877203627205.png)
 
 ## 查看历史记录 
 
-![](./media/image31.png)
+![](https://db.xinghai.ink/Typora/17355877273371763.png)
 
 ## 查看具体检测物体 
 
-![](./media/image32.png)
+![](https://db.xinghai.ink/Typora/17355877326442266.png)
 
 ## 适配手机 
 
-![](./media/image33.png)
+![](https://db.xinghai.ink/Typora/17355877382655227.png)
 
 ## 我的界面 
 
-![](./media/image34.png)
+![](https://db.xinghai.ink/Typora/17355877435548947.png)
 
 ## 修改信息 
 
-![](./media/image35.png)
+![](https://db.xinghai.ink/Typora/17355877487394545.png)
 
 # 四项目总结 
 
