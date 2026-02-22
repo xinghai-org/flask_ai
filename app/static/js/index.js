@@ -41,7 +41,7 @@ icon.addEventListener("click", (event) => {
       body: JSON.stringify({
         max_tokens: 4096,
         messages: message,
-        model: "4.0Ultra",
+        model: "lite",
         Stream: true,
       }),
     }).then((response) => {
